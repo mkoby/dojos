@@ -1,14 +1,4 @@
-class HandType
-  HighCard = 0x00
-  Pair = 0x01
-  ThreeOfAKind = 0x02
-  FullHouse = 0x04
-  FourOfAKind = 0x08
-  Straight = 0x10
-  Flush = 0x20
-  StraightFlush = 0x40
-  RoyalFlush = 0x80
-end
+require 'hand_type'
 
 class Hand
   
@@ -32,6 +22,7 @@ class Hand
   end
   
   def value
+    return HandType::RoyalFlush if has_royal_flush?
     return HandType::StraightFlush if has_flush? && has_straight?
     return HandType::Flush if has_flush?
     return HandType::Straight if has_straight?
@@ -82,6 +73,10 @@ class Hand
   
   def has_flush?
     same_suit_set.values.select{|v| v == 5}.any?
+  end
+  
+  def has_royal_flush?
+    has_flush? && @cards.each.inject(0){ |sum, card| card.value + sum } == 47
   end
   
   def set_of?(count)

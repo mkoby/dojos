@@ -23,51 +23,12 @@ describe Hand do
     let(:card_list) { "2H 3D 5S 9C KD" }
     its(:card_count) { should == 5 }
   end
-
-  describe "Hand Types" do
-    context "High Card" do
-      let(:card_list) { "2H 3D 5S 9C KD" }
-      its("high_card.value") { should == 13 }
-    end
-
-    describe "Pair" do
-      context "has a pair" do
-        let(:card_list) { "2H 2D KD 5S 9C" }
-        its(:has_pair?) { should be_true }
-        its(:has_full_house?) { should be_false }
-      end
-
-      context "does not have a pair" do
-        let(:card_list) { "2H 3H 5S 9C KD" }
-        its(:has_pair?) { should be_false }
-        its(:has_full_house?) { should be_false }
-      end
-   end
-
-    context "Three of a Kind" do
-      let(:card_list) { "2H 2D 2C 5S 9C" }
-      its(:has_three_of_a_kind?) { should be_true }
-      its(:has_pair?) { should be_false }
-      its(:has_full_house?) { should be_false }
-    end
-    
-    context "Does not have a Pair with Three of a Kind" do
-      let(:card_list) { "2H 2D 2C 5S 9C" }
-      its(:has_pair?) { should be_false }
-    end
-
-    context "Full House" do
-      let(:card_list) { "2H 2D 3S 3D 3H" }
-      its(:has_full_house?) { should be_true }
-      its(:has_pair?) { should be_true }
-      its(:has_three_of_a_kind?) { should be_true }
-    end
-  end
   
   describe "#value" do
     context "High Card" do
       let(:card_list) { "2H 3D 5S 9C KD" }
       its(:value) { should == HandType::HighCard }
+      its("high_card.value") { should == 13 }
     end
     
     context "Pair" do
@@ -103,6 +64,11 @@ describe Hand do
     context "StraightFlush" do
       let(:card_list) { "2H 3H 4H 5H 6H" }
       its(:value) { should == HandType::StraightFlush }
+    end
+    
+    context "Royal Flush" do
+      let(:card_list) { "AS TS JS QS KS" }
+      its(:value) { should == HandType::RoyalFlush }
     end
   end
 end
